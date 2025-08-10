@@ -1,16 +1,16 @@
 <?php 
-static class Conexao{
-    private $pdo;
+class Conexao{
+    private static $pdo;
 
     public static function getConexao(){
         $username="root";
-        // $password="";
+        $password="";
         try{
-            if(is_null($this->pdo)){    
-            $this->pdo = new PDO('mysql:host = localhost; dbname=testeMosten', $username/*, $password*/);
-                $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            if(is_null(self::$pdo)){    
+            self::$pdo = new PDO('mysql:host = localhost; dbname=testeMosten', $username, $password);
+                self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }     
-        return $this->pdo;   
+        return self::$pdo;   
         }
         catch(PDOException $e){
             echo $e;

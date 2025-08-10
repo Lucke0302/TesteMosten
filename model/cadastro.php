@@ -6,7 +6,6 @@ class Cadastro{
     private $email;
     private $senha;
     private $tipo;
-    private $conexao = Conexao::getConexao();
 
     public function __construct($titulo, $genero, $descricao, $imagem, $gostei, $naoGostei)
     {
@@ -16,10 +15,11 @@ class Cadastro{
         $this->imagem = $imagem;
         $this->gostei = $gostei;
         $this->naoGostei = $naoGostei;
+        $this->conexao = Conexao::getConexao();
     }
 
     public function verificarCadastro(){
-        $verificar = $conexao -> prepare("select id from files where titulo = :titulo");
+        $verificar = $this->conexao -> prepare("select id from files where titulo = :titulo");
         $verificar -> bindValue(':titulo', $this->titulo);
         $verificar -> execute();
         $qtlinhas = $verificar -> rowCount();
@@ -33,7 +33,7 @@ class Cadastro{
 
     public function Cadastro(){
         if($this->verificarCadastro() == true){
-            $cadastro = $conexao -> prepare("insert into filmes (titulo, genero, descricao, imagem) values (:titulo, :genero, :descricao, :imagem)");
+            $cadastro = $this->conexao -> prepare("insert into filmes (titulo, genero, descricao, imagem) values (:titulo, :genero, :descricao, :imagem)");
             $cadastro -> bindValue(':titulo', $this->titulo);
             $cadastro -> bindValue(':genero', $this->genero);
             $cadastro -> bindValue(':descricao', $this->descricao);

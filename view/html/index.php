@@ -6,6 +6,8 @@
     <title>Lista</title>
 </head>
 <body>
-    
+    <?php
+        include_once("../../controller/listar.php");
+    ?>    
 </body>
 </html>
