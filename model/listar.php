@@ -17,11 +17,18 @@ class Filmes{
             echo "<section id='filmes'>";
             foreach($filmes as $row){
                 echo "<div class='card'>
-                    <p class='h1'>".$row['titulo']."</p>
-                    <p class='p1'>".$row['genero']."</p>
-                    <p class='img'>".$row['descricao']."</p>
-                    <label>".$row['gostei']."</label>
-                    <label>".$row['naoGostei']."</label>
+                    <div class='conteudo-texto'>
+                        <p class='h1'>".$row['titulo']."</p>
+                        <p class='p1'>".$row['genero']."</p>
+                        <p class='p'>".$row['descricao']."</p>
+                        <div class='interacoes'>
+                            <ion-icon class='like' id='gostei".$row['id']."' name='thumbs-up'></ion-icon>
+                            <label id='quantLikes".$row['id']."'>".$row['gostei']."</label>
+                            <ion-icon class='dislike' id='naoGostei".$row['id']."' name='thumbs-down'></ion-icon>
+                            <label id='quantDislikes".$row['id']."'>".$row['naoGostei']."</label>
+                        </div>
+                    </div>
+                    <img src='".$row['imagem']."' class='imagem-filme'>
                 </div>";
             } 
             echo "</section>";
@@ -33,7 +40,7 @@ class Filmes{
         $update -> bindValue(':id', $id);
         $update -> bindValue(':gostei', $this->getLikes($id)+1);
         $update -> execute();
-        return $this->getLikes($id)+1;
+        return $this->getLikes($id);
     }
 
     public function getLikes($id){
@@ -49,14 +56,14 @@ class Filmes{
         $update -> bindValue(':id', $id);
         $update -> bindValue(':naoGostei', $this->getDislikes($id)+1);
         $update -> execute();
-        return $this->getLikes($id)+1;
+        return $this->getDislikes($id);
     }
 
     public function getDislikes($id){
         $select = $this->conexao->prepare("select naoGostei from filmes where id = :id");
         $select -> bindValue(':id', $id);
         $select -> execute();
-        $gostei = $select->fetchColumn(); 
+        $naoGostei = $select->fetchColumn(); 
         return $naoGostei;
     }
 
